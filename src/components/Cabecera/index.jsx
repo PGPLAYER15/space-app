@@ -11,11 +11,11 @@ const HeaderEstilizado = styled.header`
     
 `
 
-const Cabecera = ({setFiltro})=>{
+const Cabecera = ({setConsulta,textoConsulta })=>{
     return (
         <HeaderEstilizado>
             <img src="img/logo.png" alt="logo de Space app" />
-            <CampoTexto setFiltro={setFiltro}/>
+            <CampoTexto textoConsulta={textoConsulta} setConsulta={setConsulta}/>
         </HeaderEstilizado>
     )
 }
