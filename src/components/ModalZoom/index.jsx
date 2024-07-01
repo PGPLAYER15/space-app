@@ -1,6 +1,9 @@
 import { styled } from "styled-components"
 import Imagen from "../Galeria/Imagen"
 import BotonIcono from "../BotonIcono"
+import { useContext } from "react"
+import { GlobalContext } from "../../Context/GlobalContext"
+import useFotoModal from "../../hooks/useFotoModal"
 
 const Overlay = styled.div`
     background-color: rgba(0, 0, 0, 0.7);
@@ -27,13 +30,16 @@ const DialogEstilizado = styled.dialog`
         }
     }
 `
-const ModalZoom = ({ foto, alcerrar , alAlternarFavoritos}) => {
+const ModalZoom = () => {
+    const {estaAbiertoModal,fotoSeleccionada,cerrarModal} = useFotoModal();
+    /* const {FotoSeleccionada,alAlternarFavoritos,SetFotoSeleccionada} = useContext(GlobalContext) */
+    
     return (
         <>
-            {foto && <>
+            {estaAbiertoModal && <>
                 <Overlay />
-                <DialogEstilizado open={!!foto} onClose={alcerrar}>
-                    <Imagen foto={foto} expandida={true} alAlternarFavoritos={alAlternarFavoritos} />
+                <DialogEstilizado open={!!fotoSeleccionada} onClose={()=>cerrarModal()}>
+                    <Imagen foto={fotoSeleccionada} expandida={true} />
                     <form method="dialog">
                         <BotonIcono formMethod="dialog">
                             <img src="/iconos/cerrar.png" alt="Ícono de cerrar" />

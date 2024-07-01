@@ -1,5 +1,8 @@
 import styled from "styled-components";
 import BotonIcono from "../../BotonIcono"
+import { useContext } from "react";
+import { GlobalContext } from "../../../Context/GlobalContext";
+import useFotoModal from "../../../hooks/useFotoModal";
 
 const Figure = styled.figure`
     width: ${(props) => (props.$expandida ? '90%' : '460px')};
@@ -36,8 +39,11 @@ const Figure = styled.figure`
         align-items: center;
     `
 
-const Imagen = ({foto , expandida=false,alSolicitarZoom , alAlternarFavoritos})=>{
+const Imagen = ({foto , expandida=false, })=>{
 
+    const {abrirModal} = useFotoModal();
+
+    const {dispatch} = useContext(GlobalContext);
     const iconoFavorito = foto.favorita ? "/iconos/favorito.png" : "/iconos/favorito-activo.png"
 
     return(
@@ -47,10 +53,10 @@ const Imagen = ({foto , expandida=false,alSolicitarZoom , alAlternarFavoritos})=
             <h3>{foto.titulo}</h3>
             <Pie>
                 <h4>{foto.fuente}</h4>
-                <BotonIcono onClick={()=>alAlternarFavoritos(foto)}>
+                <BotonIcono onClick={()=> dispatch({type: 'ALTERNAR_FAVORITO', payload:foto})}>
                     <img src={iconoFavorito} alt="Icono de favorito" />
                 </BotonIcono>
-                {!expandida && <BotonIcono aria-hidden={expandida} onClick={()=> alSolicitarZoom(foto)}>
+                {!expandida && <BotonIcono aria-hidden={expandida} onClick={()=>abrirModal(foto)}>
                     <img src="/iconos/expandir.png" alt="Icono de expandir" />
                     </BotonIcono>}
             </Pie>

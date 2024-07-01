@@ -3,6 +3,9 @@ import Tag from "./Tags";
 import Populares from "./Populares";
 import styled from "styled-components";
 import Imagen from "./Imagen";
+import { useContext } from "react";
+import { GlobalContext } from "../../Context/GlobalContext";
+import Cargando from "../Cargando/index"
 
 const GaleriaContainer = styled.div`
   display: flex;
@@ -19,28 +22,29 @@ const ImagenesContainer = styled.section`
   gap: 24px;
 `;
 
-const Galeria = ({
-  fotos = [],
-  SetTag,
-  alSeleccionarFoto,
-  alAlternarFavoritos,
-  consulta,
-}) => {
+const Galeria = () => {
+  
+  //const {consulta,fotosDeGaleria,SetFotoSeleccionada,alAlternarFavoritos} = useContext(GlobalContext);
+  
+  const {state,dispatch}  = useContext(GlobalContext);
+  
+
   return (
+    state.fotosDeGaleria.length == 0 ? <Cargando></Cargando>:
     <>
-      <Tag SetTag={SetTag} />
+      <Tag />
       <GaleriaContainer>
         <SeccionFluida>
           <Titulo> Navegue por la galería</Titulo>
 
           <ImagenesContainer>
-            {fotos.filter(foto => {
-                                return consulta == '' || foto.titulo.toLocaleLowerCase().normalize("NFD").replace(/\p{Diacritic}/gu, "")
-                                    .includes(consulta.toLocaleLowerCase().normalize("NFD").replace(/\p{Diacritic}/gu, ""))
+            {state.fotosDeGaleria.filter(foto => {
+                                return state.consulta == '' || foto.titulo.toLocaleLowerCase().normalize("NFD").replace(/\p{Diacritic}/gu, "")
+                                    .includes(state.consulta.toLocaleLowerCase().normalize("NFD").replace(/\p{Diacritic}/gu, ""))
                             })
                                 .map(foto => <Imagen
-                                    alAlternarFavorito={alAlternarFavoritos}
-                                    alSolicitarZoom={alSeleccionarFoto}
+
+                                    /* alAlternarFavorito={alAlternarFavoritos} */
                                     key={foto.id}
                                     foto={foto} />)
                             }
